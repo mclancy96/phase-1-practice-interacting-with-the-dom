@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   repeatFunctionCall(changeTimer(1), 1001)
   plusButton.addEventListener('click', changeTimer(1))
   minusButton.addEventListener('click', changeTimer(-1))
+  pauseButton.addEventListener('click', togglePaused)
 })
 
 const changeTimer = (amountByWhichToChange) => {
@@ -21,4 +22,11 @@ const changeTimer = (amountByWhichToChange) => {
 const repeatFunctionCall = (funcToRun, frequency) => {
   let intervalId = setInterval(funcToRun, frequency);
   return intervalId;
+}
+
+const togglePaused = () => {
+  for (const button of buttons) {
+    button.toggleAttribute('disabled')
+  }
+  pauseButton.textContent = pauseButton.textContent === 'resume' ? 'pause' : 'resume'
 }
