@@ -1,11 +1,13 @@
 const likeButton = document.querySelector('#heart')
 const plusButton = document.querySelector('#plus')
 const minusButton = document.querySelector('#minus')
-const buttons = [likeButton, plusButton, minusButton]
+const buttons = [likeButton, plusButton, minusButton, document.querySelector('#submit')]
 const pauseButton = document.querySelector('#pause')
-const commentForm = document.querySelector('#document-form')
+const commentForm = document.querySelector('#comment-form')
 const counter = document.querySelector('#counter')
 const likeList = document.querySelector('.likes')
+const commentList = document.querySelector('#list')
+const commentInput = document.querySelector('#comment-input')
 let activeIntervalId;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   minusButton.addEventListener('click', changeTimer(-1))
   pauseButton.addEventListener('click', handlePause)
   likeButton.addEventListener('click', addLike)
+  commentForm.addEventListener('submit', addComment)
 })
 
 const changeTimer = (amountByWhichToChange) => {
@@ -89,4 +92,13 @@ const createLikeString = (num, likeCount) => {
     return `${num} has been liked ${likeCount} time`
   }
   return `${num} has been liked ${likeCount} times`
+}
+
+const addComment = (submitEvent) => {
+  submitEvent.preventDefault()
+  const commentText = commentInput.value;
+  commentInput.value = '';
+  const newComment = document.createElement('p')
+  newComment.textContent = commentText;
+  commentList.appendChild(newComment)
 }
