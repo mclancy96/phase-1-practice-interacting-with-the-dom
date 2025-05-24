@@ -5,12 +5,13 @@ const buttons = [likeButton, plusButton, minusButton]
 const pauseButton = document.querySelector('#pause')
 const commentForm = document.querySelector('#document-form')
 const counter = document.querySelector('#counter')
+let activeIntervalId;
 
 document.addEventListener('DOMContentLoaded', () => {
   repeatFunctionCall(changeTimer(1), 1001)
   plusButton.addEventListener('click', changeTimer(1))
   minusButton.addEventListener('click', changeTimer(-1))
-  pauseButton.addEventListener('click', togglePaused)
+  pauseButton.addEventListener('click', handlePause)
 })
 
 const changeTimer = (amountByWhichToChange) => {
@@ -20,8 +21,25 @@ const changeTimer = (amountByWhichToChange) => {
 }
 
 const repeatFunctionCall = (funcToRun, frequency) => {
-  let intervalId = setInterval(funcToRun, frequency);
-  return intervalId;
+  if (activeIntervalId) {
+    clearInterval(activeIntervalId);
+  }
+  activeIntervalId = setInterval(funcToRun, frequency);
+  return activeIntervalId;
+}
+
+const stopFunctionCall = () => {
+  if (activeIntervalId) {
+    clearInterval(activeIntervalId);
+    activeIntervalId = null;
+    return true;
+  }
+  return false;
+}
+
+const handlePause = () => {
+  startStopTimer();
+  togglePaused();
 }
 
 const togglePaused = () => {
@@ -29,4 +47,12 @@ const togglePaused = () => {
     button.toggleAttribute('disabled')
   }
   pauseButton.textContent = pauseButton.textContent === 'resume' ? 'pause' : 'resume'
+}
+
+const startStopTimer = () => {
+  if (pauseButton.textContent === 'resume') {
+    repeatFunctionCall(changeTimer(1), 1001)
+  } else {
+    stopFunctionCall();
+  }
 }
